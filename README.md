@@ -1,0 +1,1 @@
+# carefree-mongodb-spring-boot-starter
