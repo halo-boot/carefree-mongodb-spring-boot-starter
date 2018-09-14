@@ -27,12 +27,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
- * 根据 {@link MongoCarefreeArchetype} 的配置创建 {@link MongoClientOptions}。
+ * 根据 {@link MongoCarefreeArchetype} 的配置创建 {@link MongoClientOptions.Builder}。
  *
  * @author Kweny
  * @since 1.0.0
  */
-class _MongoClientOptionsUtil {
+class _MongoOptionUtil {
 
     // w1 / w2 / w10 ...
     private static final Pattern PATTERN_WX = Pattern.compile("w(\\d+)");
@@ -41,7 +41,7 @@ class _MongoClientOptionsUtil {
     // secondary-[{a=0,b=1},{c=3,d=4},{e=5,f=6}]-10000 / secondary-[{a=0,b=1}] / secondary-10000 / secondary
     private static final Pattern PATTERN_READ_PREFERENCE = Pattern.compile("([a-zA-Z]+)(-\\[(\\{[a-zA-Z=0-9,]+}(,\\{[a-zA-Z=0-9,]+})*)?])?(-(\\d+))?");
 
-    static MongoClientOptions buildMongoClientOptions(MongoCarefreeArchetype archetype) {
+    static MongoCarefreeArchetype resolveMongoClientOptions(MongoCarefreeArchetype archetype) {
         MongoClientOptions.Builder builder = MongoClientOptions.builder();
 
         if (archetype.getDescription() != null) {
@@ -147,7 +147,10 @@ class _MongoClientOptionsUtil {
             }
         }
 
-        return options;
+        archetype.setResolvedOptions(options);
+        archetype.setResolvedOptionsBuilder(builder);
+
+        return archetype;
     }
 
     private static WriteConcern resolveWriteConcern(String propertyValue) {
@@ -164,7 +167,7 @@ class _MongoClientOptionsUtil {
         } else if ("journal".equalsIgnoreCase(propertyValue)) {
             return WriteConcern.JOURNALED;
         } else {
-            String culledPropertyValue = deleteWhitespace(propertyValue);
+            String culledPropertyValue = _InternalUtil.deleteWhitespace(propertyValue);
             if (PATTERN_WX.matcher(culledPropertyValue.toLowerCase()).matches()) {
                 String wStr = culledPropertyValue.toLowerCase().replaceAll(PATTERN_WX.pattern(), "$1");
                 return new WriteConcern(Integer.parseInt(wStr));
@@ -207,7 +210,7 @@ class _MongoClientOptionsUtil {
         } else if ("nearest".equalsIgnoreCase(propertyValue)) {
             return ReadPreference.nearest();
         } else {
-            String culledPropertyValue = deleteWhitespace(propertyValue);
+            String culledPropertyValue = _InternalUtil.deleteWhitespace(propertyValue);
             if (PATTERN_READ_PREFERENCE.matcher(culledPropertyValue).matches()) {
                 String mode = culledPropertyValue.replaceAll(PATTERN_READ_PREFERENCE.pattern(), "$1");
                 String tagSetListStr = culledPropertyValue.replaceAll(PATTERN_READ_PREFERENCE.pattern(), "$3");
@@ -339,24 +342,6 @@ class _MongoClientOptionsUtil {
             }
         }
         return listeners;
-    }
-
-    private static String deleteWhitespace(final String str) {
-        if (str == null || str.length() == 0) {
-            return str;
-        }
-        final int sz = str.length();
-        final char[] chs = new char[sz];
-        int count = 0;
-        for (int i = 0; i < sz; i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
-                chs[count++] = str.charAt(i);
-            }
-        }
-        if (count == sz) {
-            return str;
-        }
-        return new String(chs, 0, count);
     }
 
 }

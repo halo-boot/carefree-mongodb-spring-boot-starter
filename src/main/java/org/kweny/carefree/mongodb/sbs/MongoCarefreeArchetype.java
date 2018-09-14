@@ -16,6 +16,8 @@
 
 package org.kweny.carefree.mongodb.sbs;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -29,12 +31,18 @@ import java.util.List;
 @ConfigurationProperties
 public class MongoCarefreeArchetype {
 
+    private Boolean primary;
+
     private String uri;
 
     private String[] addresses;
-    private String username;
     private String database;
+
+    private Boolean auth;
+    private String username;
     private String password;
+    private String authenticationMechanism;
+    private String authenticationSource;
 
     private String description;
     private String applicationName;
@@ -78,7 +86,49 @@ public class MongoCarefreeArchetype {
     private List<String> serverListeners;
     private List<String> serverMonitorListeners;
 
+    private String typeKey;
+    private String templateName;
+    private String gridFsTemplateName;
+    private String gridFsDatabase;
+
     private List<String> optionedListeners;
+
+    private MongoClientOptions resolvedOptions;
+    private MongoClientOptions.Builder resolvedOptionsBuilder;
+    private MongoClient resolvedClient;
+
+    MongoClientOptions getResolvedOptions() {
+        return resolvedOptions;
+    }
+
+    void setResolvedOptions(MongoClientOptions resolvedOptions) {
+        this.resolvedOptions = resolvedOptions;
+    }
+
+    MongoClientOptions.Builder getResolvedOptionsBuilder() {
+        return resolvedOptionsBuilder;
+    }
+
+    void setResolvedOptionsBuilder(MongoClientOptions.Builder resolvedOptionsBuilder) {
+        this.resolvedOptionsBuilder = resolvedOptionsBuilder;
+    }
+
+    MongoClient getResolvedClient() {
+        return resolvedClient;
+    }
+
+    void setResolvedClient(MongoClient resolvedClient) {
+        this.resolvedClient = resolvedClient;
+    }
+
+    // ----- getter/setter -----
+    public Boolean getPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(Boolean primary) {
+        this.primary = primary;
+    }
 
     public String getUri() {
         return uri;
@@ -96,14 +146,6 @@ public class MongoCarefreeArchetype {
         this.addresses = addresses;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getDatabase() {
         return database;
     }
@@ -112,12 +154,44 @@ public class MongoCarefreeArchetype {
         this.database = database;
     }
 
+    public Boolean getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Boolean auth) {
+        this.auth = auth;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAuthenticationMechanism() {
+        return authenticationMechanism;
+    }
+
+    public void setAuthenticationMechanism(String authenticationMechanism) {
+        this.authenticationMechanism = authenticationMechanism;
+    }
+
+    public String getAuthenticationSource() {
+        return authenticationSource;
+    }
+
+    public void setAuthenticationSource(String authenticationSource) {
+        this.authenticationSource = authenticationSource;
     }
 
     public String getDescription() {
@@ -366,6 +440,38 @@ public class MongoCarefreeArchetype {
 
     public void setServerMonitorListeners(List<String> serverMonitorListeners) {
         this.serverMonitorListeners = serverMonitorListeners;
+    }
+
+    public String getTypeKey() {
+        return typeKey;
+    }
+
+    public void setTypeKey(String typeKey) {
+        this.typeKey = typeKey;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getGridFsTemplateName() {
+        return gridFsTemplateName;
+    }
+
+    public void setGridFsTemplateName(String gridFsTemplateName) {
+        this.gridFsTemplateName = gridFsTemplateName;
+    }
+
+    public String getGridFsDatabase() {
+        return gridFsDatabase;
+    }
+
+    public void setGridFsDatabase(String gridFsDatabase) {
+        this.gridFsDatabase = gridFsDatabase;
     }
 
     public List<String> getOptionedListeners() {

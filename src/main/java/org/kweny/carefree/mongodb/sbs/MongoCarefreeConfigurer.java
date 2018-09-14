@@ -16,7 +16,6 @@
 
 package org.kweny.carefree.mongodb.sbs;
 
-import com.mongodb.MongoClientOptions;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -43,7 +42,7 @@ import java.util.Map;
  */
 public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
-    private static final String DEFAULT_MONGO_TEMPLATE_NAME = "mongoTemplate";
+
 
     private Environment environment;
 
@@ -72,9 +71,15 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
         Map<String, MongoCarefreeArchetype> archetypes = buildMongoOptionArchetypes(templateMap);
 
         archetypes.forEach((templateName, archetype) -> {
-            MongoClientOptions clientOptions = _MongoClientOptionsUtil.buildMongoClientOptions(archetype);
+
+            archetype = _MongoOptionUtil.resolveMongoClientOptions(archetype);
+
+            archetype = _MongoClientUtil.buildMongoClient(archetype);
+
         });
     }
+
+
 
     private Map<String, MongoCarefreeArchetype> buildMongoOptionArchetypes(Map<String, String> templateMap) {
         final Map<String, MongoCarefreeArchetype> archetypeMap = new HashMap<>();
@@ -82,6 +87,8 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
         templateMap.forEach((templateName, prefix) -> {
             BindResult<MongoCarefreeArchetype> result = binder.bind(prefix, Bindable.of(MongoCarefreeArchetype.class));
             MongoCarefreeArchetype archetype = result.get();
+
+            archetype.setTemplateName(templateName);
             archetypeMap.put(templateName, archetype);
         });
         return archetypeMap;
@@ -107,7 +114,7 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
 
                         if (nameElements.length == 1) {
                             // < mongoTemplate, carefree.mongodb.options >
-                            templateMap.put(DEFAULT_MONGO_TEMPLATE_NAME, optionsPrefix);
+                            templateMap.put(_InternalUtil.DEFAULT_MONGO_TEMPLATE_NAME, optionsPrefix);
                         } else if (nameElements.length > 1) {
                             String templateName = nameElements[0];
                             // < templateName, carefree.mongodb.options.templatename >
