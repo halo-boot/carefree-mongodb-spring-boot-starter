@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -29,7 +27,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @ConfigurationProperties
-public class MongoCarefreeArchetype {
+public class MongoCarefreeStructure {
 
     private Boolean primary;
 
@@ -90,36 +88,9 @@ public class MongoCarefreeArchetype {
     private String templateName;
     private String gridFsTemplateName;
     private String gridFsDatabase;
+    private String fieldNamingStrategy;
 
     private List<String> optionedListeners;
-
-    private MongoClientOptions resolvedOptions;
-    private MongoClientOptions.Builder resolvedOptionsBuilder;
-    private MongoClient resolvedClient;
-
-    MongoClientOptions getResolvedOptions() {
-        return resolvedOptions;
-    }
-
-    void setResolvedOptions(MongoClientOptions resolvedOptions) {
-        this.resolvedOptions = resolvedOptions;
-    }
-
-    MongoClientOptions.Builder getResolvedOptionsBuilder() {
-        return resolvedOptionsBuilder;
-    }
-
-    void setResolvedOptionsBuilder(MongoClientOptions.Builder resolvedOptionsBuilder) {
-        this.resolvedOptionsBuilder = resolvedOptionsBuilder;
-    }
-
-    MongoClient getResolvedClient() {
-        return resolvedClient;
-    }
-
-    void setResolvedClient(MongoClient resolvedClient) {
-        this.resolvedClient = resolvedClient;
-    }
 
     // ----- getter/setter -----
     public Boolean getPrimary() {
@@ -472,6 +443,14 @@ public class MongoCarefreeArchetype {
 
     public void setGridFsDatabase(String gridFsDatabase) {
         this.gridFsDatabase = gridFsDatabase;
+    }
+
+    public String getFieldNamingStrategy() {
+        return fieldNamingStrategy;
+    }
+
+    public void setFieldNamingStrategy(String fieldNamingStrategy) {
+        this.fieldNamingStrategy = fieldNamingStrategy;
     }
 
     public List<String> getOptionedListeners() {

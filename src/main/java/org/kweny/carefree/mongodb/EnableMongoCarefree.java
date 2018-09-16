@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 import org.springframework.context.annotation.Import;
 
@@ -52,7 +52,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({MongoCarefreeConfigurer.class})
+@Import({MongoCarefreeImportSelector.class})
 public @interface EnableMongoCarefree {
 
     String ENABLED_OVERRIDE_PROPERTY = "carefree.mongodb.enable";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 import com.mongodb.MongoClientOptions;
 
@@ -26,6 +26,6 @@ import com.mongodb.MongoClientOptions;
  */
 public interface MongoCarefreeOptionedListener {
 
-    void optionCreated(MongoClientOptions option);
+    void optioned(MongoClientOptions.Builder builder);
 
 }

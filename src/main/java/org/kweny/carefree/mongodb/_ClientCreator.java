@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 import com.mongodb.*;
 
@@ -22,23 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO Kweny _MongoClientUtil
+ * TODO Kweny _ClientCreator
  *
  * @author Kweny
  * @since 1.0.0
  */
-class _MongoClientUtil {
+class _ClientCreator {
 
-    static MongoCarefreeArchetype buildMongoClient(MongoCarefreeArchetype archetype) {
-        if (archetype.getUri() != null && archetype.getUri().trim().length() > 0) {
-            MongoClientURI clientUri = new MongoClientURI(archetype.getUri(), archetype.getResolvedOptionsBuilder());
-            archetype.setResolvedClient(new MongoClient(clientUri));
-            return archetype;
+    static MongoClient createMongoClient(MongoClientOptions.Builder builder, MongoCarefreeStructure structure) {
+        if (structure.getUri() != null && structure.getUri().trim().length() > 0) {
+            MongoClientURI clientUri = new MongoClientURI(structure.getUri(), builder);
+            return new MongoClient(clientUri);
         }
 
         List<ServerAddress> serverSeeds = new ArrayList<>();
-        if (archetype.getAddresses() != null) {
-            for (String address : archetype.getAddresses()) {
+        if (structure.getAddresses() != null) {
+            for (String address : structure.getAddresses()) {
                 String host = ServerAddress.defaultHost();
                 int port = ServerAddress.defaultPort();
                 if (address != null && address.trim().length() > 0) {
@@ -57,11 +56,11 @@ class _MongoClientUtil {
 
         MongoCredential credential = null;
 
-        if (Boolean.TRUE.equals(archetype.getAuth())) {
-            String username = archetype.getUsername();
-            char[] passwordChars = archetype.getPassword() != null ? archetype.getPassword().toCharArray() : null;
-            String mechanismString = archetype.getAuthenticationMechanism();
-            String source = archetype.getAuthenticationSource() != null ? archetype.getAuthenticationSource() : "admin";
+        if (Boolean.TRUE.equals(structure.getAuth())) {
+            String username = structure.getUsername();
+            char[] passwordChars = structure.getPassword() != null ? structure.getPassword().toCharArray() : null;
+            String mechanismString = structure.getAuthenticationMechanism();
+            String source = structure.getAuthenticationSource() != null ? structure.getAuthenticationSource() : "admin";
 
             if (MongoCredential.GSSAPI_MECHANISM.equalsIgnoreCase(mechanismString)) {
                 credential = MongoCredential.createGSSAPICredential(username);
@@ -83,12 +82,12 @@ class _MongoClientUtil {
             }
         }
 
-        if (credential != null) {
-            archetype.setResolvedClient(new MongoClient(serverSeeds, credential, archetype.getResolvedOptions()));
-        } else {
-            archetype.setResolvedClient(new MongoClient(serverSeeds, archetype.getResolvedOptions()));
-        }
+        MongoClientOptions options = builder.build();
 
-        return archetype;
+        if (credential != null) {
+            return new MongoClient(serverSeeds, credential, builder.build());
+        } else {
+            return new MongoClient(serverSeeds, builder.build());
+        }
     }
 }

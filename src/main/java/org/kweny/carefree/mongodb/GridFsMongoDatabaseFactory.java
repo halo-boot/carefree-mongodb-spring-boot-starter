@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 import com.mongodb.DB;
 import com.mongodb.client.MongoDatabase;

@@ -1,0 +1,74 @@
+
+
+server:
+  port: 8089
+
+spring:
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+
+  messages:
+    basename: i18n/messages
+
+  data:
+    mongodb:
+#      uri: mongodb://memone:OpenSesame!@192.168.1.241:27017/memone
+      uri: mongodb://memone:OpenSesame!@192.168.16.54:27017/memone
+
+
+test:
+  prefix: carefree.prefix
+
+carefree:
+  mongodb:
+    enable: true
+
+  prefix:
+    options:
+      addresses:
+        - 192.168.16.54:27017
+        - 192.168.16.54:27017
+      database: memone
+      username: memone
+      password: OpenSesame!
+      replica-set: replicaName
+      always-use-m-beans: false
+      connect-timeout: 10000
+      heartbeat-connect-timeout: 20000
+      heartbeat-frequency: 10000
+      heartbeat-socket-timeout: 20000
+      local-threshold: 15
+      max-connection-idel-time: 0
+      max-connection-life-time: 0
+      max-connections-per-host: 20
+      max-wait-time: 120000
+      min-connections-per-host: 20
+      min-heartbeat-frequency: 500
+      server-selection-timeout: 30000
+      socket-keep-alive: false
+      socket-timeout: 0
+      ssl-enabled: false
+      ssl-invalid-host-name-allowed: false
+      threads-allowed-to-block-for-connection-multiplier: 5
+
+      readPreference: primaryPreferred-[a=b,c=d]-10000
+
+      testTemplate:
+        username: aaa
+        addresses:
+          - ${carefree.mongodb.options.addresses[0]}
+          - ${carefree.mongodb.options.addresses[0]}
+        database: ${carefree.mongodb.options.database}

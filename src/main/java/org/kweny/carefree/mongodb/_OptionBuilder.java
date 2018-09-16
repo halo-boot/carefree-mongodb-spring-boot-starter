@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 import com.mongodb.*;
 import com.mongodb.event.*;
@@ -27,12 +27,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
- * 根据 {@link MongoCarefreeArchetype} 的配置创建 {@link MongoClientOptions.Builder}。
+ * 根据 {@link MongoCarefreeStructure} 的配置创建 {@link MongoClientOptions.Builder}。
  *
  * @author Kweny
  * @since 1.0.0
  */
-class _MongoOptionUtil {
+public class _OptionBuilder {
 
     // w1 / w2 / w10 ...
     private static final Pattern PATTERN_WX = Pattern.compile("w(\\d+)");
@@ -41,65 +41,65 @@ class _MongoOptionUtil {
     // secondary-[{a=0,b=1},{c=3,d=4},{e=5,f=6}]-10000 / secondary-[{a=0,b=1}] / secondary-10000 / secondary
     private static final Pattern PATTERN_READ_PREFERENCE = Pattern.compile("([a-zA-Z]+)(-\\[(\\{[a-zA-Z=0-9,]+}(,\\{[a-zA-Z=0-9,]+})*)?])?(-(\\d+))?");
 
-    static MongoCarefreeArchetype resolveMongoClientOptions(MongoCarefreeArchetype archetype) {
+    static MongoClientOptions.Builder buildMongoClientOptions(MongoCarefreeStructure structure) {
         MongoClientOptions.Builder builder = MongoClientOptions.builder();
 
-        if (archetype.getDescription() != null) {
-            builder.description(archetype.getDescription());
+        if (structure.getDescription() != null) {
+            builder.description(structure.getDescription());
         }
-        if (archetype.getApplicationName() != null) {
-            builder.applicationName(archetype.getApplicationName());
-        }
-
-        if (archetype.getConnectTimeout() != null) {
-            builder.connectTimeout(archetype.getConnectTimeout());
-        }
-        if (archetype.getSocketTimeout() != null) {
-            builder.socketTimeout(archetype.getSocketTimeout());
+        if (structure.getApplicationName() != null) {
+            builder.applicationName(structure.getApplicationName());
         }
 
-        if (archetype.getMaxWaitTime() != null) {
-            builder.maxWaitTime(archetype.getMaxWaitTime());
+        if (structure.getConnectTimeout() != null) {
+            builder.connectTimeout(structure.getConnectTimeout());
         }
-        if (archetype.getMinConnectionsPerHost() != null) {
-            builder.minConnectionsPerHost(archetype.getMinConnectionsPerHost());
-        }
-        if (archetype.getMaxConnectionsPerHost() != null) {
-            builder.connectionsPerHost(archetype.getMaxConnectionsPerHost());
-        }
-        if (archetype.getMaxConnectionIdleTime() != null) {
-            builder.maxConnectionIdleTime(archetype.getMaxConnectionIdleTime());
-        }
-        if (archetype.getMaxConnectionLifeTime() != null) {
-            builder.maxConnectionLifeTime(archetype.getMaxConnectionLifeTime());
-        }
-        if (archetype.getThreadsAllowedToBlockForConnectionMultiplier() != null) {
-            builder.threadsAllowedToBlockForConnectionMultiplier(archetype.getThreadsAllowedToBlockForConnectionMultiplier());
+        if (structure.getSocketTimeout() != null) {
+            builder.socketTimeout(structure.getSocketTimeout());
         }
 
-        if (archetype.getRetryWrites() != null) {
-            builder.retryWrites(archetype.getRetryWrites());
+        if (structure.getMaxWaitTime() != null) {
+            builder.maxWaitTime(structure.getMaxWaitTime());
         }
-        if (archetype.getAlwaysUseMBeans() != null) {
-            builder.alwaysUseMBeans(archetype.getAlwaysUseMBeans());
+        if (structure.getMinConnectionsPerHost() != null) {
+            builder.minConnectionsPerHost(structure.getMinConnectionsPerHost());
+        }
+        if (structure.getMaxConnectionsPerHost() != null) {
+            builder.connectionsPerHost(structure.getMaxConnectionsPerHost());
+        }
+        if (structure.getMaxConnectionIdleTime() != null) {
+            builder.maxConnectionIdleTime(structure.getMaxConnectionIdleTime());
+        }
+        if (structure.getMaxConnectionLifeTime() != null) {
+            builder.maxConnectionLifeTime(structure.getMaxConnectionLifeTime());
+        }
+        if (structure.getThreadsAllowedToBlockForConnectionMultiplier() != null) {
+            builder.threadsAllowedToBlockForConnectionMultiplier(structure.getThreadsAllowedToBlockForConnectionMultiplier());
         }
 
-        if (archetype.getSslEnabled() != null) {
-            builder.sslEnabled(archetype.getSslEnabled());
+        if (structure.getRetryWrites() != null) {
+            builder.retryWrites(structure.getRetryWrites());
         }
-        if (archetype.getSslInvalidHostNameAllowed() != null) {
-            builder.sslInvalidHostNameAllowed(archetype.getSslInvalidHostNameAllowed());
+        if (structure.getAlwaysUseMBeans() != null) {
+            builder.alwaysUseMBeans(structure.getAlwaysUseMBeans());
         }
 
-        if (archetype.getLocalThreshold() != null) {
-            builder.localThreshold(archetype.getLocalThreshold());
+        if (structure.getSslEnabled() != null) {
+            builder.sslEnabled(structure.getSslEnabled());
         }
-        if (archetype.getServerSelectionTimeout() != null) {
-            builder.serverSelectionTimeout(archetype.getServerSelectionTimeout());
+        if (structure.getSslInvalidHostNameAllowed() != null) {
+            builder.sslInvalidHostNameAllowed(structure.getSslInvalidHostNameAllowed());
         }
-        if (archetype.getServerSelector() != null) {
+
+        if (structure.getLocalThreshold() != null) {
+            builder.localThreshold(structure.getLocalThreshold());
+        }
+        if (structure.getServerSelectionTimeout() != null) {
+            builder.serverSelectionTimeout(structure.getServerSelectionTimeout());
+        }
+        if (structure.getServerSelector() != null) {
             try {
-                Class<?> clazz = Class.forName(archetype.getServerSelector());
+                Class<?> clazz = Class.forName(structure.getServerSelector());
                 Object serverSelector = clazz.getConstructor().newInstance();
                 builder.serverSelector((ServerSelector) serverSelector);
             } catch (Exception e) {
@@ -107,50 +107,45 @@ class _MongoOptionUtil {
             }
         }
 
-        if (archetype.getRequiredReplicaSetName() != null) {
-            builder.requiredReplicaSetName(archetype.getRequiredReplicaSetName());
+        if (structure.getRequiredReplicaSetName() != null) {
+            builder.requiredReplicaSetName(structure.getRequiredReplicaSetName());
         }
 
-        if (archetype.getWriteConcern() != null) {
-            WriteConcern writeConcern = resolveWriteConcern(archetype.getWriteConcern());
+        if (structure.getWriteConcern() != null) {
+            WriteConcern writeConcern = resolveWriteConcern(structure.getWriteConcern());
             if (writeConcern != null) {
                 builder.writeConcern(writeConcern);
             }
         }
 
-        if (archetype.getReadConcern() != null) {
-            ReadConcern readConcern = resolveReadConcern(archetype.getReadConcern());
+        if (structure.getReadConcern() != null) {
+            ReadConcern readConcern = resolveReadConcern(structure.getReadConcern());
             if (readConcern != null) {
                 builder.readConcern(readConcern);
             }
         }
 
-        if (archetype.getReadPreference() != null) {
-            ReadPreference readPreference = resolveReadPreference(archetype.getReadConcern());
+        if (structure.getReadPreference() != null) {
+            ReadPreference readPreference = resolveReadPreference(structure.getReadConcern());
             if (readPreference != null) {
                 builder.readPreference(readPreference);
             }
         }
 
-        resolveListeners(builder, archetype.getCommandListeners(), ListenerType.COMMAND);
-        resolveListeners(builder, archetype.getClusterListeners(), ListenerType.CLUSTER);
-        resolveListeners(builder, archetype.getConnectionPoolListeners(), ListenerType.CONNECTION_POOL);
-        resolveListeners(builder, archetype.getServerListeners(), ListenerType.SERVER);
-        resolveListeners(builder, archetype.getServerMonitorListeners(), ListenerType.SERVER_MONITOR);
+        resolveListeners(builder, structure.getCommandListeners(), ListenerType.COMMAND);
+        resolveListeners(builder, structure.getClusterListeners(), ListenerType.CLUSTER);
+        resolveListeners(builder, structure.getConnectionPoolListeners(), ListenerType.CONNECTION_POOL);
+        resolveListeners(builder, structure.getServerListeners(), ListenerType.SERVER);
+        resolveListeners(builder, structure.getServerMonitorListeners(), ListenerType.SERVER_MONITOR);
 
-        MongoClientOptions options = builder.build();
-
-        List<MongoCarefreeOptionedListener> optionedListeners = resolveOptionedListeners(archetype.getOptionedListeners());
+        List<MongoCarefreeOptionedListener> optionedListeners = resolveOptionedListeners(structure.getOptionedListeners());
         if (optionedListeners != null && optionedListeners.size() > 0) {
             for (MongoCarefreeOptionedListener optionedListener : optionedListeners) {
-                optionedListener.optionCreated(options);
+                optionedListener.optioned(builder);
             }
         }
 
-        archetype.setResolvedOptions(options);
-        archetype.setResolvedOptionsBuilder(builder);
-
-        return archetype;
+        return builder;
     }
 
     private static WriteConcern resolveWriteConcern(String propertyValue) {
@@ -167,7 +162,7 @@ class _MongoOptionUtil {
         } else if ("journal".equalsIgnoreCase(propertyValue)) {
             return WriteConcern.JOURNALED;
         } else {
-            String culledPropertyValue = _InternalUtil.deleteWhitespace(propertyValue);
+            String culledPropertyValue = _Assistant.deleteWhitespace(propertyValue);
             if (PATTERN_WX.matcher(culledPropertyValue.toLowerCase()).matches()) {
                 String wStr = culledPropertyValue.toLowerCase().replaceAll(PATTERN_WX.pattern(), "$1");
                 return new WriteConcern(Integer.parseInt(wStr));
@@ -210,7 +205,7 @@ class _MongoOptionUtil {
         } else if ("nearest".equalsIgnoreCase(propertyValue)) {
             return ReadPreference.nearest();
         } else {
-            String culledPropertyValue = _InternalUtil.deleteWhitespace(propertyValue);
+            String culledPropertyValue = _Assistant.deleteWhitespace(propertyValue);
             if (PATTERN_READ_PREFERENCE.matcher(culledPropertyValue).matches()) {
                 String mode = culledPropertyValue.replaceAll(PATTERN_READ_PREFERENCE.pattern(), "$1");
                 String tagSetListStr = culledPropertyValue.replaceAll(PATTERN_READ_PREFERENCE.pattern(), "$3");
@@ -343,5 +338,4 @@ class _MongoOptionUtil {
         }
         return listeners;
     }
-
 }

@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
 /**
- * TODO Kweny _InternalUtil
+ * TODO Kweny _Assistant
  *
  * @author Kweny
  * @since TODO version
  */
-class  _InternalUtil {
+class _Assistant {
 
-    static String DEFAULT_MONGO_TEMPLATE_NAME = "mongoTemplate";
-    static String DEFAULT_GRID_FS_TEMPLATE_NAME = "gridFsTemplate";
+    static String CAREFREE_PREFIX = "carefree.mongodb";
+
+    static final String DEFAULT_MONGO_TEMPLATE_NAME = "mongoTemplate";
+    static final String DEFAULT_GRID_FS_TEMPLATE_NAME = "gridFsTemplate";
 
     static String deleteWhitespace(final String str) {
         if (str == null || str.length() == 0) {
@@ -44,4 +46,5 @@ class  _InternalUtil {
         }
         return new String(chs, 0, count);
     }
+
 }

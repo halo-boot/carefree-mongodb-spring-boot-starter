@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.kweny.carefree.mongodb.sbs;
+package org.kweny.carefree.mongodb;
 
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -24,79 +23,63 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
-import org.springframework.core.type.AnnotationMetadata;
 
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
- * 从 Spring Boot 的环境配置中加载 MongoDB Client 的配置，
- * 根据配置创建并注册 {@link org.springframework.data.mongodb.core.MongoTemplate} Bean。
+ * TODO Kweny _StructureResolver
  *
  * @author Kweny
  * @since 1.0.0
  */
-public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, EnvironmentAware {
+class _StructureResolver {
 
-
-
-    private Environment environment;
-
-    @Override
-    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        if (!isEnabled()) {
-            return;
-        }
-
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap(
-                importingClassMetadata.getAnnotationAttributes(EnableMongoCarefree.class.getName()));
-
-        if (attributes == null) {
-            return;
-        }
-
-        String carefreePrefix = getEnvironment().resolvePlaceholders(attributes.getString("prefix"));
-
-        /*
-         * < mongo-template-bean-name, mongo-settings-property-name-prefix>
-         * e.g. < "masterTemplate", "carefree.mongodb.settings.mastertemplate" >
-         * Note: All letters in the property-name-prefix are lowercase.
-         */
-        Map<String, String> templateMap = getMongoTemplateNames(carefreePrefix.concat(".options"));
-
-        Map<String, MongoCarefreeArchetype> archetypes = buildMongoOptionArchetypes(templateMap);
-
-        archetypes.forEach((templateName, archetype) -> {
-
-            archetype = _MongoOptionUtil.resolveMongoClientOptions(archetype);
-
-            archetype = _MongoClientUtil.buildMongoClient(archetype);
-
-        });
+    static List<MongoCarefreeStructure> resolveStructures(Environment environment, String carefreePrefix) {
+        String optionsPrefix = carefreePrefix.concat(".options");
+        Map<String, String> templateMap = getMongoTemplateNames(environment, optionsPrefix);
+        return buildStructures(environment, templateMap);
     }
 
+    private static List<MongoCarefreeStructure> buildStructures(Environment environment, Map<String, String> templateMap) {
+        final List<MongoCarefreeStructure> structures = new LinkedList<>();
+        final Binder binder = Binder.get(environment);
 
+        // 若没有显示声明 primary，则取第一个作为 primary 数据源。
+        boolean primaryDefined = false;
+        int index = 0;
+        MongoCarefreeStructure firstStructure = null;
+        for (Map.Entry<String, String> entry : templateMap.entrySet()) {
+            String templateName = entry.getKey();
+            String prefix = entry.getValue();
 
-    private Map<String, MongoCarefreeArchetype> buildMongoOptionArchetypes(Map<String, String> templateMap) {
-        final Map<String, MongoCarefreeArchetype> archetypeMap = new HashMap<>();
-        final Binder binder = Binder.get(getEnvironment());
-        templateMap.forEach((templateName, prefix) -> {
-            BindResult<MongoCarefreeArchetype> result = binder.bind(prefix, Bindable.of(MongoCarefreeArchetype.class));
-            MongoCarefreeArchetype archetype = result.get();
+            BindResult<MongoCarefreeStructure> result = binder.bind(prefix, Bindable.of(MongoCarefreeStructure.class));
+            MongoCarefreeStructure structure = result.get();
 
-            archetype.setTemplateName(templateName);
-            archetypeMap.put(templateName, archetype);
-        });
-        return archetypeMap;
+            structure.setTemplateName(templateName);
+            structures.add(structure);
+
+            primaryDefined |= Boolean.TRUE.equals(structure.getPrimary());
+
+            if (index == 0) {
+                firstStructure = structure;
+                index++;
+            }
+        }
+
+        if (!primaryDefined && firstStructure != null) {
+            firstStructure.setPrimary(true);
+        }
+
+        return structures;
     }
 
-    private Map<String, String> getMongoTemplateNames(String optionsPrefix) {
-        Map<String, String> templateMap = new HashMap<>();
-        Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(getEnvironment());
+    private static Map<String, String> getMongoTemplateNames(Environment environment, String optionsPrefix) {
+        Map<String, String> templateMap = new TreeMap<>();
+        Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
         for (ConfigurationPropertySource source : sources) {
             if (source instanceof IterableConfigurationPropertySource) {
                 IterableConfigurationPropertySource propertySource = (IterableConfigurationPropertySource) source;
@@ -114,7 +97,7 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
 
                         if (nameElements.length == 1) {
                             // < mongoTemplate, carefree.mongodb.options >
-                            templateMap.put(_InternalUtil.DEFAULT_MONGO_TEMPLATE_NAME, optionsPrefix);
+                            templateMap.put(_Assistant.DEFAULT_MONGO_TEMPLATE_NAME, optionsPrefix);
                         } else if (nameElements.length > 1) {
                             String templateName = nameElements[0];
                             // < templateName, carefree.mongodb.options.templatename >
@@ -127,7 +110,7 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
         return templateMap;
     }
 
-    private String getPropertyNameString(ConfigurationPropertyName propertyName) {
+    private static String getPropertyNameString(ConfigurationPropertyName propertyName) {
         StringBuilder result = new StringBuilder();
         for (int elementIdx = 0; elementIdx < propertyName.getNumberOfElements(); elementIdx++) {
             String element = propertyName.getElement(elementIdx, ConfigurationPropertyName.Form.ORIGINAL);
@@ -145,22 +128,6 @@ public class MongoCarefreeConfigurer implements ImportBeanDefinitionRegistrar, E
             }
         }
         return result.toString();
-    }
-
-    private boolean isEnabled() {
-        if (getClass() == MongoCarefreeConfigurer.class) {
-            return getEnvironment().getProperty(EnableMongoCarefree.ENABLED_OVERRIDE_PROPERTY, Boolean.class, true);
-        }
-        return true;
-    }
-
-    private Environment getEnvironment() {
-        return this.environment;
-    }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
     }
 
 }
