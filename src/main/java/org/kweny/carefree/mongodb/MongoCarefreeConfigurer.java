@@ -59,11 +59,13 @@ public class MongoCarefreeConfigurer implements BeanDefinitionRegistryPostProces
         _BeanRegistrar registrar = new _BeanRegistrar(applicationContext, registry);
 
         for (MongoCarefreeStructure structure : structures) {
+
             MongoClientOptions.Builder builder = _OptionBuilder.buildMongoClientOptions(structure);
 
             MongoClient client = _ClientCreator.createMongoClient(builder, structure);
 
             registrar.doRegister(client, structure);
+
         }
     }
 

@@ -26,6 +26,6 @@ import com.mongodb.MongoClientOptions;
  */
 public interface MongoCarefreeOptionedListener {
 
-    void optioned(MongoClientOptions.Builder builder);
+    void optioned(MongoCarefreeStructure structure, MongoClientOptions.Builder builder);
 
 }

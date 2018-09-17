@@ -141,7 +141,7 @@ public class _OptionBuilder {
         List<MongoCarefreeOptionedListener> optionedListeners = resolveOptionedListeners(structure.getOptionedListeners());
         if (optionedListeners != null && optionedListeners.size() > 0) {
             for (MongoCarefreeOptionedListener optionedListener : optionedListeners) {
-                optionedListener.optioned(builder);
+                optionedListener.optioned(structure, builder);
             }
         }
 

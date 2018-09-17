@@ -42,9 +42,11 @@ carefree:
         - 192.168.16.54:27017
         - 192.168.16.54:27017
       database: memone
+      auth: true
       username: memone
       password: OpenSesame!
-      replica-set: replicaName
+      authentication-mechanism: SCRAM-SHA-1
+      authentication-source: memone
       always-use-m-beans: false
       connect-timeout: 10000
       heartbeat-connect-timeout: 20000
@@ -63,12 +65,11 @@ carefree:
       ssl-enabled: false
       ssl-invalid-host-name-allowed: false
       threads-allowed-to-block-for-connection-multiplier: 5
-
-      readPreference: primaryPreferred-[a=b,c=d]-10000
+      grid-fs-template-name: priGridTemplate
 
       testTemplate:
         username: aaa
         addresses:
-          - ${carefree.mongodb.options.addresses[0]}
-          - ${carefree.mongodb.options.addresses[0]}
-        database: ${carefree.mongodb.options.database}
+          - ${carefree.prefix.options.addresses[0]}
+          - ${carefree.prefix.options.addresses[0]}
+        database: carefree-test

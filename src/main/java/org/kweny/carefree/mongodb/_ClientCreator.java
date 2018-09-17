@@ -82,8 +82,6 @@ class _ClientCreator {
             }
         }
 
-        MongoClientOptions options = builder.build();
-
         if (credential != null) {
             return new MongoClient(serverSeeds, credential, builder.build());
         } else {
