@@ -16,7 +16,7 @@ apply plugin: 'maven-publish'
 group 'org.kweny.carefree'
 version '1.0.0'
 
-sourceCompatibility = 10
+sourceCompatibility = 1.8
 
 repositories {
     jcenter()
