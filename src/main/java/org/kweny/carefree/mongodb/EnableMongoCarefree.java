@@ -54,8 +54,5 @@ import java.lang.annotation.*;
 @Inherited
 @Import({MongoCarefreeImportSelector.class})
 public @interface EnableMongoCarefree {
-
-    String ENABLED_OVERRIDE_PROPERTY = "carefree.mongodb.enable";
-
     String prefix() default "carefree.mongodb";
 }

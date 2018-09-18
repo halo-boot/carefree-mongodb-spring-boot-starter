@@ -48,7 +48,7 @@ public class MongoCarefreeConfigurer implements BeanDefinitionRegistryPostProces
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        String carefreePrefix = _Assistant.CAREFREE_PREFIX;
+        String carefreePrefix = _Assistant.MONGO_CAREFREE_PREFIX;
 
         List<MongoCarefreeStructure> structures = _StructureResolver.resolveStructures(getEnvironment(), carefreePrefix);
 

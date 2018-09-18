@@ -24,7 +24,9 @@ package org.kweny.carefree.mongodb;
  */
 class _Assistant {
 
-    static String CAREFREE_PREFIX = "carefree.mongodb";
+    static final String MONGO_CAREFREE_PREFIX = "carefree.mongodb";
+    static final String MONGO_CAREFREE_OPTIONS_PREFIX = "carefree.mongodb.options";
+    static final String ENABLED_OVERRIDE_PROPERTY = "carefree.mongodb.enable";
 
     static final String DEFAULT_MONGO_TEMPLATE_NAME = "mongoTemplate";
     static final String DEFAULT_GRID_FS_TEMPLATE_NAME = "gridFsTemplate";

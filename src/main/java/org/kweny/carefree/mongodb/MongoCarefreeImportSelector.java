@@ -48,14 +48,14 @@ public class MongoCarefreeImportSelector implements DeferredImportSelector, Envi
             return NO_IMPORTS;
         }
 
-        _Assistant.CAREFREE_PREFIX = getEnvironment().resolvePlaceholders(attributes.getString("prefix"));
+//        _Assistant.CAREFREE_PREFIX = getEnvironment().resolvePlaceholders(attributes.getString("prefix"));
 
         return new String[] {MongoCarefreeConfigurer.class.getName()};
     }
 
     private boolean isEnabled() {
         if (getClass() == MongoCarefreeImportSelector.class) {
-            return getEnvironment().getProperty(EnableMongoCarefree.ENABLED_OVERRIDE_PROPERTY, Boolean.class, true);
+            return getEnvironment().getProperty(_Assistant.ENABLED_OVERRIDE_PROPERTY, Boolean.class, true);
         }
         return true;
     }

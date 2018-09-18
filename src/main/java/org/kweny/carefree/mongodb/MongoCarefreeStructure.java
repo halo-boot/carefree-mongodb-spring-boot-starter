@@ -26,7 +26,7 @@ import java.util.List;
  * @author Kweny
  * @since 1.0.0
  */
-@ConfigurationProperties
+@ConfigurationProperties(_Assistant.MONGO_CAREFREE_OPTIONS_PREFIX)
 public class MongoCarefreeStructure {
 
     private Boolean primary;
