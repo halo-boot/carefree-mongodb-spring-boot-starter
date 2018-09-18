@@ -17,10 +17,10 @@
 package org.kweny.carefree.mongodb;
 
 /**
- * TODO Kweny _Assistant
+ * 辅助工具
  *
  * @author Kweny
- * @since TODO version
+ * @since 1.0.0
  */
 class _Assistant {
 

@@ -42,10 +42,10 @@ import org.springframework.util.StringUtils;
 import java.util.Collections;
 
 /**
- * TODO Kweny _BeanRegistrar
+ * 注册 {@link MongoTemplate} Bean。
  *
  * @author Kweny
- * @since TODO version
+ * @since 1.0.0
  */
 class _BeanRegistrar {
 

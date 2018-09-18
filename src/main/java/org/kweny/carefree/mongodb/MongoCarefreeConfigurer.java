@@ -33,10 +33,10 @@ import org.springframework.core.env.Environment;
 import java.util.List;
 
 /**
- * TODO Kweny MongoCarefreeConfigurer
+ * 核心配置类
  *
  * @author Kweny
- * @since TODO version
+ * @since 1.0.0
  */
 @Configuration
 @ConditionalOnClass(MongoClient.class)

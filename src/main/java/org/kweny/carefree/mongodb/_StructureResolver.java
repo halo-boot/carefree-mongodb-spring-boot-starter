@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * TODO Kweny _StructureResolver
+ * 解析创建 {@link MongoCarefreeStructure} 配置实例。
  *
  * @author Kweny
  * @since 1.0.0

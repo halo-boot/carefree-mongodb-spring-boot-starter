@@ -19,7 +19,7 @@ package org.kweny.carefree.mongodb;
 import com.mongodb.MongoClientOptions;
 
 /**
- * 配置加载监听器。当 {@link MongoClientOptions} 实例创建完成后触发。
+ * 配置加载监听器。当 {@link MongoClientOptions.Builder} 实例创建完成后触发。
  *
  * @author Kweny
  * @since 1.0.0

@@ -24,10 +24,10 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.util.StringUtils;
 
 /**
- * TODO Kweny GridFsMongoDatabaseFactory
+ * 针对 GridFS 客户端连接工厂的包装。
  *
  * @author Kweny
- * @since TODO version
+ * @since 1.0.0
  */
 public class GridFsMongoDatabaseFactory implements MongoDbFactory {
 

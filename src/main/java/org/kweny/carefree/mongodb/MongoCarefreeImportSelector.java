@@ -24,7 +24,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * TODO Kweny MongoCarefreeImportSelector
+ * 确定是否进行 carefree mongodb 的自动化配置。
  *
  * @author Kweny
  * @since 1.0.0
@@ -47,8 +47,6 @@ public class MongoCarefreeImportSelector implements DeferredImportSelector, Envi
         if (attributes == null) {
             return NO_IMPORTS;
         }
-
-//        _Assistant.CAREFREE_PREFIX = getEnvironment().resolvePlaceholders(attributes.getString("prefix"));
 
         return new String[] {MongoCarefreeConfigurer.class.getName()};
     }
