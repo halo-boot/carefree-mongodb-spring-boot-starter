@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * @author Kweny
  * @since 1.0.0
  */
-public class _OptionBuilder {
+class _OptionBuilder {
 
     // w1 / w2 / w10 ...
     private static final Pattern PATTERN_WX = Pattern.compile("w(\\d+)");

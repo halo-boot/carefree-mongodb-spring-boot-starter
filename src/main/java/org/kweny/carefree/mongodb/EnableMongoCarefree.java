@@ -22,7 +22,8 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- * 启用 MongoDB 自动配置的注解，添加到应用程序主类上——
+ *     启用 MongoDB 自动配置的注解，添加到应用程序主类上——
+ * </p>
  * <pre>
  *    {@code @EnableMongoCarefree}
  *    {@code @SpringBootApplication}
@@ -32,7 +33,6 @@ import java.lang.annotation.*;
  *         }
  *     }
  * </pre>
- * </p>
  *
  * <p>
  *     可以指定属性名的前缀：

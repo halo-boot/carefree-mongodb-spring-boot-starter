@@ -30,6 +30,7 @@ target/
 .gradle/
 out/
 build/
+local.properties
 
 # JRebel config
 rebel.xml
