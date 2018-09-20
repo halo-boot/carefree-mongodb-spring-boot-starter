@@ -15,7 +15,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group 'org.kweny.carefree'
-version '1.0.0'
+version '1.0.1'
 
 sourceCompatibility = 8
 
@@ -41,7 +41,7 @@ ext {
     PUBLISHED_PACKAGING = 'jar'
     PUBLISHED_GROUP_ID = 'org.kweny.carefree'
     PUBLISHED_ARTIFACT_ID = 'carefree-mongodb-spring-boot-starter'
-    PUBLISHED_VERSION = '1.0.0'
+    PUBLISHED_VERSION = '1.0.1'
 
     PROJECT_NAME = 'Carefree MongoDB'
     PROJECT_DESCRIPTION = 'A MongoDB auto-configuration starter for SpringBoot.'
@@ -58,4 +58,60 @@ ext {
     ALL_LICENSES = ["Apache-2.0"]
 }
 
-apply from: 'https://raw.githubusercontent.com/kweny/assets/master/gradle/bintray_upload_normal.gradle'
+apply from: 'https://raw.githubusercontent.com/kweny/assets/master/gradle/bintray-upload-normal.gradle'
+/*
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                packaging PUBLISHED_PACKAGING
+                groupId PUBLISHED_GROUP_ID
+                artifactId PUBLISHED_ARTIFACT_ID
+                version PUBLISHED_VERSION
+
+                name PROJECT_NAME
+                description PROJECT_DESCRIPTION
+                url PROJECT_WEBSITE_URL
+
+                scm {
+                    connection PROJECT_VCS_URL
+                    developerConnection PROJECT_VCS_URL
+                    url PROJECT_WEBSITE_URL
+                }
+
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELIPER_NAME
+                        email DEVELIPER_EMAIL
+                    }
+                }
+
+                licenses {
+                    license {
+                        name LICENSE_NAME
+                        url LICENSE_URL
+                    }
+                }
+            }
+        }
+    }
+}
+
+apply plugin: 'signing'
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}*/
