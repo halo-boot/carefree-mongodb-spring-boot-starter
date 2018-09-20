@@ -8,7 +8,7 @@ English | [中文][1]
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Hex.pm](https://img.shields.io/badge/powered_by-Kweny-blue.svg)](http://kweny.io)
 
-[Spring Data MongoDB][2] 为面向 MongoDB 的开发提供了一套基于 Spring 的编程模型，在 Spring Boot 中使用 spring-boot-starter-data-mongodb 可以很方便的引入 Spring Data MongoDB 以及 MongoDB Java Driver。
+[Spring Data MongoDB][2] 为面向 MongoDB 的开发提供了一套基于 Spring 的编程模型，在 Spring Boot 中使用 spring-boot-starter-data-mongodb 可以很方便的引入 Spring Data MongoDB 以及 [MongoDB Java Driver][3]。
 
 然而，Spring Data MongoDB 只提供了最简单的 MongoDB 客户端选项，且不支持多数据源配置。为了使用连接池、集群等 MongoDB 高级特性，及满足多数据源的需求，我们不得不进行一些额外的配置和编码工作。
 
@@ -209,7 +209,7 @@ carefree.mongodb.options.xxx
 
 ### 配置说明
 
-关于 MongoDB Java Driver 客户端选项的详细说明可以参考 [MongoDB 客户端连接选项][3] 一文。
+关于 MongoDB Java Driver 客户端选项的详细说明可以参考 [MongoDB 客户端连接选项][4] 一文。
 
 *注：由于官方已对 socket-keep-alive 选项以及 MONGODB-CR 认证方式标注废弃，因此 Carefree MongoDB 也不予支持。*
 
@@ -243,4 +243,5 @@ carefree.mongodb.options.xxx
 
   [1]: https://github.com/kweny/carefree-mongodb-spring-boot-starter/blob/master/README.md
   [2]: https://projects.spring.io/spring-data-mongodb/
-  [3]: http://kweny.io/mongodb-client-connection-options/
+  [3]: https://mongodb.github.io/mongo-java-driver/
+  [4]: http://kweny.io/mongodb-client-connection-options/
