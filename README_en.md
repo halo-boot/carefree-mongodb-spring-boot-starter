@@ -1,6 +1,6 @@
 # Carefree MongoDB
 
-README English | [中文][1]
+English | [中文][1]
 
 [![Build Status](https://travis-ci.org/kweny/carefree-mongodb-spring-boot-starter.svg?branch=master)](https://travis-ci.org/kweny/carefree-mongodb-spring-boot-starter)
 [![GitHub release](https://img.shields.io/badge/version-v1.0.1-brightgreen.svg)](https://github.com/kweny/carefree-mongodb-spring-boot-starter)
