@@ -1,6 +1,6 @@
 # Carefree MongoDB
 
-README [English][1] | 中文
+README English | [中文][1]
 
 [![Build Status](https://travis-ci.org/kweny/carefree-mongodb-spring-boot-starter.svg?branch=master)](https://travis-ci.org/kweny/carefree-mongodb-spring-boot-starter)
 [![GitHub release](https://img.shields.io/badge/version-v1.0.1-brightgreen.svg)](https://github.com/kweny/carefree-mongodb-spring-boot-starter)
@@ -241,6 +241,6 @@ carefree.mongodb.options.xxx
         
 
 
-  [1]: https://github.com/kweny/carefree-mongodb-spring-boot-starter/blob/master/README_en.md
+  [1]: https://github.com/kweny/carefree-mongodb-spring-boot-starter/blob/master/README.md
   [2]: https://projects.spring.io/spring-data-mongodb/
   [3]: http://kweny.io/mongodb-client-connection-options/
