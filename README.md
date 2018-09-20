@@ -16,6 +16,8 @@ Carefree MongoDB 由此而生，除了支持完整的 MongoDB 客户端选项及
 
 ## 快速使用
 
+可以使用 Gradle 或 Maven 快速引入 Carefree MongoDB。将同时引入 spring-data-mongodb 和 mongo-java-driver，因此无需再额外定义二者的引入。
+
 ### Gradle
 
 ```groovy
@@ -46,7 +48,7 @@ public class Application {
 }
 ```
 
-Carefree MongoDb 将自动加载配置文件 `application.properties` 或 `application.yml` 中以 `carefree.mongodb` 为前缀的属性。
+Carefree MongoDB 将自动加载配置文件 `application.properties` 或 `application.yml` 中以 `carefree.mongodb` 为前缀的属性。
 
 属性名的前缀可自定义，如——
 
@@ -54,7 +56,7 @@ Carefree MongoDb 将自动加载配置文件 `application.properties` 或 `appli
 @EnableMongoCarefree("mongodb.custom.prefix")
 ```
 
-同时支持占位符，如——
+同时支持占位符，用以引用定义好的属性值，如——
 
 ```
 @EnableMongoCarefree("mongodb.${placeholder}.prefix")
@@ -226,7 +228,7 @@ carefree.mongodb.options.xxx
 * **server-listeners** - `com.mongodb.event.ServerListener` 接口实现类的全名，可以指定多个。
 * **server-monitor-listeners** - `com.mongodb.event.ServerMonitorListener` 接口实现类的全名，可以指定多个。
 * **write-concern** - 该选项接受的值形式如下——
-    * `w1`、`w2`、`w3` ... - 其中的数组可以指定。
+    * `w1`、`w2`、`w3` ... - 其中的数字可根据实际情况指定。
     * `majority`、`journal` - 分别对应 `WriteConcern.MAJORITY` 和 `WriteConcern.JOURNALED` 两种模式。
     * `w2-10000-true`、`w2-10000-false` - 其中 `w2` 表示写入模式；`10000` 表示写入超时时间，即 wtimeout，单位为毫秒；`true/false` 表示是否需要 journalling。
 * **read-concern** - 可选值为 `local`、`majority`、`linearizable`、`snapshot`。
