@@ -36,11 +36,11 @@ compile 'org.kweny.carefree:carefree-mongodb-spring-boot-starter:1.0.1'
 
 ### @EnableMongoCarefree
 
-在应用主类上添加 `@EnableMongoCarefree` 注解开启自动配置——
+在应用主类上添加 `@EnableMongoCarefree` 注解开启自动配置，同时禁用 Spring Boot 默认的 MongoDB 自动配置——
 
 ```java
 @EnableMongoCarefree
-@SpringBootApplication
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class Application {
    public static void main(String[] args) {
        SpringApplication.run(Application.class, args);
