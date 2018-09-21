@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Apenk.
+ * Copyright (C) 2018 Kweny.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfigurat
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 /**
- * TODO Kweny TestApplication
+ * for test
  *
  * @author Kweny
- * @since TODO version
+ * @since 1.0.1
  */
 @EnableMongoCarefree
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
