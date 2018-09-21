@@ -52,13 +52,13 @@ Carefree MongoDB 将自动加载配置文件 `application.properties` 或 `appli
 
 属性名的前缀可自定义，如——
 
-```
+```java
 @EnableMongoCarefree("mongodb.custom.prefix")
 ```
 
 同时支持占位符，用以引用定义好的属性值，如——
 
-```
+```java
 @EnableMongoCarefree("mongodb.${placeholder}.prefix")
 @EnableMongoCarefree("${mongodb.placeholder.prefix}")
 ```
@@ -70,7 +70,7 @@ Carefree MongoDB 支持完整的 MongoDB Java Driver 客户端选项，及多数
 ### 配置示例
 
 #### application.yml
-```yml
+```yaml
 carefree:
   mongodb:
     enable: true
@@ -131,7 +131,8 @@ carefree:
 ```
 
 #### application.properties
-```
+
+```properties
 carefree.mongodb.enable=true
 carefree.mongodb.options.uri=mongodb://[username:password@]host1[:port1][,host2[:port2],…[,hostN[:portN]]][/[database][?options]]
 carefree.mongodb.options.primary=true
@@ -185,7 +186,7 @@ carefree.mongodb.options.optioned-listeners[0]=com.xxx.CustomOptionedListener
 
 进行多数据源配置时，需要明确指定各数据源的 MongoTemplate Bean 名称。如——
 
-```yml
+```yaml
 carefree:
   mongodb:
     enable: true
@@ -202,11 +203,11 @@ carefree:
 
 以上配置表示 3 个数据源，将创建 `mongoTemplate`、`masterTemplate`、`testTemplate` 三个 Bean。其中 `mongoTemplate` 为默认名称，不需要显示声明，当不指定名称时，将以此为名创建并注入。即以下两种配置等价——
 
+```properties
+carefree.mongodb.options.mongoTemplate.xxx=yyy
 ```
-carefree.mongodb.options.mongoTemplate.xxx
-```
-```
-carefree.mongodb.options.xxx
+```properties
+carefree.mongodb.options.xxx=yyy
 ```
 
 ### 配置说明

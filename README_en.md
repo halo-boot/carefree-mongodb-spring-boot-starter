@@ -52,13 +52,13 @@ Carefree MongoDB will automatically load the properties of the configuration fil
 
 The prefix of the property name can be customized, such as:
 
-```
+```java
 @EnableMongoCarefree("mongodb.custom.prefix")
 ```
 
 It also supports placeholders to reference defined property values, such as:
 
-```
+```java
 @EnableMongoCarefree("mongodb.${placeholder}.prefix")
 @EnableMongoCarefree("${mongodb.placeholder.prefix}")
 ```
@@ -70,7 +70,7 @@ Carefree MongoDB supports the full MongoDB Java Driver client options and multip
 ### Configuration example
 
 #### application.yml
-```yml
+```yaml
 carefree:
   mongodb:
     enable: true
@@ -131,7 +131,7 @@ carefree:
 ```
 
 #### application.properties
-```
+```properties
 carefree.mongodb.enable=true
 carefree.mongodb.options.uri=mongodb://[username:password@]host1[:port1][,host2[:port2],…[,hostN[:portN]]][/[database][?options]]
 carefree.mongodb.options.primary=true
@@ -185,7 +185,7 @@ carefree.mongodb.options.optioned-listeners[0]=com.xxx.CustomOptionedListener
 
 When configuring multiple data sources, you needo to explicitly specify the MongoTemplate Bean name for each data source, such as:
 
-```yml
+```yaml
 carefree:
   mongodb:
     enable: true
@@ -202,11 +202,11 @@ carefree:
 
 The above configuration defines 3 data sources, and 3 beans: `mongoTemplate`、`masterTemplate`、`testTemplate`, will be created. Where `mongoTemplate` is the default name and no need to specify explicitly, if no name is specified, it will be created and injected with this name. That is, the following two configurations are equivalent:
 
+```properties
+carefree.mongodb.options.mongoTemplate.xxx=yyy
 ```
-carefree.mongodb.options.mongoTemplate.xxx
-```
-```
-carefree.mongodb.options.xxx
+```properties
+carefree.mongodb.options.xxx=yyy
 ```
 
 ### Configuration instructions
