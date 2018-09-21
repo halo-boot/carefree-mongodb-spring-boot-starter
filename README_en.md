@@ -8,15 +8,15 @@ English | [中文][1]
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Hex.pm](https://img.shields.io/badge/powered_by-Kweny-blue.svg)](http://kweny.io)
 
-[Spring Data MongoDB][2] 为面向 MongoDB 的开发提供了一套基于 Spring 的编程模型，在 Spring Boot 中使用 spring-boot-starter-data-mongodb 可以很方便的引入 Spring Data MongoDB 以及 [MongoDB Java Driver][3]。
+[Spring Data MongoDB][2] provides a Spring-based programming model for MongoDB development. Spring Data MongoDB and [MongoDB Java Driver][3] can be easily introduced using spring-boot-starter-data-mongodb in Spring Boot.
 
-然而，Spring Data MongoDB 只提供了最简单的 MongoDB 客户端选项，且不支持多数据源配置。为了使用连接池、集群等 MongoDB 高级特性，及满足多数据源的需求，我们不得不进行一些额外的配置和编码工作。
+However, Spring Data MongoDB only provides the simplest MongoDB client options and not support multiple data source configruations. In order to use MongoDB advanced features such as connection pooling, clustering, etc., and to meet the needs of multiple data sources, we had to do some additional configuration and coding work.
 
-Carefree MongoDB 由此而生，除了支持完整的 MongoDB 客户端选项及多数据源配置之外，还提供了一些其它的实用功能。使用后，Carefree MongoDB 将自动创建并注入 MongoTemplate 以及 GridFsTemplate 实例。
+Carefree MongoDB comes for this, in addition to supporting the full MongoDB client options and Multi-data source configuration, there are some other useful features. Once used, Carefree MongoDB will automatically create and inject MongoTemplate and GridFsTemplate instances.
 
-## 快速使用
+## Getting started
 
-可以使用 Gradle 或 Maven 快速引入 Carefree MongoDB。将同时引入 spring-data-mongodb 和 mongo-java-driver，因此无需再额外定义二者的引入。
+You can quickly introduce Carefree MongoDB using Gradle or Maven. Both spring-data-mongodb and mongo-java-driver will be introduced, so there is no need to define the introduction of both.
 
 ### Gradle
 
@@ -36,7 +36,7 @@ compile 'org.kweny.carefree:carefree-mongodb-spring-boot-starter:1.0.1'
 
 ### @EnableMongoCarefree
 
-在应用主类上添加 `@EnableMongoCarefree` 注解开启自动配置，同时禁用 Spring Boot 默认的 MongoDB 自动配置——
+Add the `@EnableMongoCarefree` annotation on the application main class to enable automatic configuration and disable Spring Boot's default MongoDB auto-configuration:
 
 ```java
 @EnableMongoCarefree
@@ -48,26 +48,26 @@ public class Application {
 }
 ```
 
-Carefree MongoDB 将自动加载配置文件 `application.properties` 或 `application.yml` 中以 `carefree.mongodb` 为前缀的属性。
+Carefree MongoDB will automatically load the properties of the configuration file `application.properties` or `application.yml` prefixed with `carefree.mongodb`.
 
-属性名的前缀可自定义，如——
+The prefix of the property name can be customized, such as:
 
 ```
 @EnableMongoCarefree("mongodb.custom.prefix")
 ```
 
-同时支持占位符，用以引用定义好的属性值，如——
+It also supports placeholders to reference defined property values, such as:
 
 ```
 @EnableMongoCarefree("mongodb.${placeholder}.prefix")
 @EnableMongoCarefree("${mongodb.placeholder.prefix}")
 ```
 
-## 配置选项
+## Configuration options
 
-Carefree MongoDB 支持完整的 MongoDB Java Driver 客户端选项，及多数据源配置，同时也提供了一些额外的配置项。
+Carefree MongoDB supports the full MongoDB Java Driver client options and multiple data source configurations, as well as some additional configuration options.
 
-### 配置示例
+### Configuration example
 
 #### application.yml
 ```yml
@@ -181,9 +181,9 @@ carefree.mongodb.options.field-naming-strategy=com.xxx.CustomFieldNamingStrategy
 carefree.mongodb.options.optioned-listeners[0]=com.xxx.CustomOptionedListener
 ```
 
-#### 多数据源
+#### Multiple data source
 
-进行多数据源配置时，需要明确指定各数据源的 MongoTemplate Bean 名称。如——
+When configuring multiple data sources, you needo to explicitly specify the MongoTemplate Bean name for each data source, such as:
 
 ```yml
 carefree:
@@ -200,7 +200,7 @@ carefree:
         uri: yyy
 ```
 
-以上配置表示 3 个数据源，将创建 `mongoTemplate`、`masterTemplate`、`testTemplate` 三个 Bean。其中 `mongoTemplate` 为默认名称，不需要显示声明，当不指定名称时，将以此为名创建并注入。即以下两种配置等价——
+The above configuration defines 3 data sources, and 3 beans: `mongoTemplate`、`masterTemplate`、`testTemplate`, will be created. Where `mongoTemplate` is the default name and no need to specify explicitly, if no name is specified, it will be created and injected with this name. That is, the following two configurations are equivalent:
 
 ```
 carefree.mongodb.options.mongoTemplate.xxx
@@ -209,37 +209,37 @@ carefree.mongodb.options.mongoTemplate.xxx
 carefree.mongodb.options.xxx
 ```
 
-### 配置说明
+### Configuration instructions
 
-关于 MongoDB Java Driver 客户端选项的详细说明可以参考 [MongoDB 客户端连接选项][4] 一文。
+A detailed description of the MongoDB Java Driver client options can be found in the article [MongoDB 客户端连接选项][4].
 
-*注：由于官方已对 socket-keep-alive 选项以及 MONGODB-CR 认证方式标注废弃，因此 Carefree MongoDB 也不予支持。*
+*Note: Since the socket-keep-alive option and the MONGODB-CR authentication method have been deprecated, Carefree MongoDB does not support them.*
 
-以下将对一些由 Carefree MongoDB 特别处理的配置项进行说明——
+Hare are some options that are specifically handled by Carefree MongoDB:
 
-* **carefree.mongodb.enable** - 用于指示是否开启 Carefree MongoDB 的自动配置。该选项设为 false 时将覆盖 `@EnableMongoCarefree` 注解并关闭自动配置。默认为 true。
-* **uri** - MongoDB 的连接字符串，当配置了 `uri` 时，将忽略 `addresses`、`database`、`username` 等连接相关的配置项，而直接使用 `uri` 建立连接。
-* **auth** - 服务端是否需要认证，默认为 false，如果服务端需要认证，请将该选项设为 true，否则即使配置了 `username`、`password` 等选项也会被忽略。
-* **authentication-mechanism** - 服务端认证所采用的算法，可选值为 `PLAIN`、`GSSAPI`、`MONGODB-X509`、`SCRAM-SHA-1`、`SCRAM-SHA-256`。*注：由于官方已对 `MONGODB-CR` 认证方式标注废弃，因此 Carefree MongoDB 直接不予支持。*
-* **server-selector** - `com.mongodb.selector.ServerSelector` 接口实现类的全名。
-* **command-listeners** - `com.mongodb.event.CommandListener` 接口实现类的全名，可以指定多个。
-* **cluster-listeners** - `com.mongodb.event.ClusterListener` 接口实现类的全名，可以指定多个。
-* **connection-pool-listeners** - `com.mongodb.event.ConnectionPoolListener` 接口实现类的全名，可以指定多个。
-* **server-listeners** - `com.mongodb.event.ServerListener` 接口实现类的全名，可以指定多个。
-* **server-monitor-listeners** - `com.mongodb.event.ServerMonitorListener` 接口实现类的全名，可以指定多个。
-* **write-concern** - 该选项接受的值形式如下——
-    * `w1`、`w2`、`w3` ... - 其中的数字可根据实际情况指定。
-    * `majority`、`journal` - 分别对应 `WriteConcern.MAJORITY` 和 `WriteConcern.JOURNALED` 两种模式。
-    * `w2-10000-true`、`w2-10000-false` - 其中 `w2` 表示写入模式；`10000` 表示写入超时时间，即 wtimeout，单位为毫秒；`true/false` 表示是否需要 journalling。
-* **read-concern** - 可选值为 `local`、`majority`、`linearizable`、`snapshot`。
-* **read-preference** - 该选项接受的值形式如下——
-    * `primary`、`primaryPreferred`、`secondary`、`secondaryPreferred`、`nearest` - 分别表示主节点、首选主节点、从节点、首选从节点以及最近节点 5 种模式。
-    * `mode-tagSet-staleness` - 这种配置方式在 `非 primary` 模式下可以指定从哪些节点读取（tagSet）以及容忍的最大延迟（staleness），其中 tagSet 可以指定多个，staleness 单位为毫秒。如 `secondary-[{a=0,b=1},{c=3,d=4},{e=5}]-10000`、`secondary-[{a=0,b=1}]`、`secondary-10000`。
-* **type-key** - Java 对象存储为 MongoDB 的 Document 时，会同时以一个名为 `_class` 的字段存储类名。该选项用于指定这个字段的名称，如果设为 false 将不存储这个字段；若为 true 则以默认的 `_class` 存储；其它值则以指定的值为名存储这个字段。
-* **field-naming-strategy** - `org.springframework.data.mapping.model.FieldNamingStrategy` 接口实现类的全名。
-* **grid-fs-template-name** - 指定该数据源 `GridFsTemplate` 的 Bean 名称。若不指定则不创建该数据源的 `GridFsTemplate`。默认的（名为 `mongoTemplate`）的数据源即使不指定该选项也会创建名为 `gridFsTemplate` 的 Bean。
-* **grid-fs-database** - GridFS 数据库名称。默认使用 `database` 的值。
-* **optioned-listeners** - `org.kweny.carefree.mongodb.MongoCarefreeOptionedListener` 接口实现类的全名，可以指定多个。这个监听器于配置选项被加载解析完成后触发，接受 `org.kweny.carefree.mongodb.MongoCarefreeStructure` 和 `com.mongodb.MongoClientOptions.Builder` 两个实例参数，可以在连接、工厂、template 等对象真正创建之前进行一些操作，如手动设置一些没有（无法）通过配置文件来指定的值等。
+* **carefree.mongodb.enable** - Used to indicate whether to enable auto-configuration of Carefree MongoDB. Setting this option to false overrides the `@EnableMongoCarefree` annotation and turns off automatic configuration. The default is true.
+* **uri** - The connection string for MongoDB. When `uri` is configured, the connection-related options such as addresses`, `database`, `username` will be ignored, and use `uri` to create connections.
+* **auth** - Whether the server needs authentication, the default is false. If the server needs authentication, set this option to true. Otherwise, even if the options `username`, `password` are configured, it will be ignored.
+* **authentication-mechanism** - The algorithm used for server authentication. The optional values are `PLAIN`, `GSSAPI`, `MONGODB-X509`, `SCRAM-SHA-1`, `SCRAM-SHA-256`. *Note: Since the MONGODB-CR authentication method has been deprecated, Carefree MongoDB does not support it.*
+* **server-selector** - The full name of the `com.mongodb.selector.ServerSelector` interface implementation class.
+* **command-listeners** - The full name of the `com.mongodb.event.CommandListener` interface implementation class. it can be multiple.
+* **cluster-listeners** - The full name of the `com.mongodb.event.ClusterListener` interface implementation class. it can be multiple.
+* **connection-pool-listeners** - The full name of the `com.mongodb.event.ConnectionPoolListener` interface implementation class. it can be multiple.
+* **server-listeners** - The full name of the `com.mongodb.event.ServerListener` interface implementation class. it can be multiple.
+* **server-monitor-listeners** - The full name of the `com.mongodb.event.ServerMonitorListener` interface implementation class. it can be multiple.
+* **write-concern** - The value accepted by this option is as follows:
+    * `w1`、`w2`、`w3` ... - The numbers can be specified according to the actual situation.
+    * `majority`、`journal` - Corresponds to `WriteConcern.MAJORITY` and `WriteConcern.JOURNALED` respectively.
+    * `w2-10000-true`、`w2-10000-false` - Where `w2` indicates write mode; `10000` indicates write timeout, ie wtimeout, in milliseconds; `true/false` indicates whether journalling is required.
+* **read-concern** - The optional values are `local`, `majority`, `linearizable`, `snapshot`.
+* **read-preference** - The value accepted by this option is as follows:
+    * `primary`、`primaryPreferred`、`secondary`、`secondaryPreferred`、`nearest` - Corresponds to 5 modes: primary node, preferred primary node, secondary node, preferred secondary node, and nearest node.
+    * `mode-tagSet-staleness` - in `non-primary` mode, this configuration can specify which nodes to read from (tagSet) and the maximum latency (staleness) . Where tagSet can be multiple, and staleness is in milliseconds. Such as `secondary-[{a=0,b=1},{c=3,d=4},{e=5}]-10000`,`secondary-[{a=0,b=1}]` , `secondary-10000`.
+* **type-key** - When a Java object is stored as a Document for MongoDB, the class name is stored in a field named `_class`. This option is used to specify the name of this field. If set it to false, this field will not be stored; if true, it will be stored with the default `_class`; other values, the value will be used as the field name.
+* **field-naming-strategy** - The full name of the `org.springframework.data.mapping.model.FieldNamingStrategy` interface implementation class.
+* **grid-fs-template-name** - Specifies the `GridFsTemplate` bean name of the data source. If not specified it, the `GridFsTemplate` of the data source will not be created. The default (named `mongoTemplate`) data source creates a bean named `gridFsTemplate` even if this option is not specified.
+* **grid-fs-database** - The GridFS database name. The value of `database` is used by default.
+* **optioned-listeners** - The full name of the `org.kweny.carefree.mongodb.MongoCarefreeOptionedListener` interface implementation class. it can be multiple. This listener fires after the configuration options have been loaded and resolved. Accepts two instance parameters: `org.kweny.carefree.mongodb.MongoCarefreeStructure` and `com.mongodb.MongoClientOptions.Builder`. This listener can do something before the instances of connections, factories, templates, etc., are created. For example, manually set some values that are not (or cannot) be specified by the configuration file.
         
 
 
