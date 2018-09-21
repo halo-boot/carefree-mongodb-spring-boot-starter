@@ -21,7 +21,7 @@ You can quickly introduce Carefree MongoDB using Gradle or Maven. Both spring-da
 ### Gradle
 
 ```groovy
-compile 'org.kweny.carefree:carefree-mongodb-spring-boot-starter:1.0.1'
+compile group: 'org.kweny.carefree', name: 'carefree-mongodb-spring-boot-starter', version: '1.0.1'
 ```
 
 ### Maven

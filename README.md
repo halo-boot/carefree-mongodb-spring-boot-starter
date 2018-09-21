@@ -21,7 +21,7 @@ Carefree MongoDB 由此而生，除了支持完整的 MongoDB 客户端选项及
 ### Gradle
 
 ```groovy
-compile 'org.kweny.carefree:carefree-mongodb-spring-boot-starter:1.0.1'
+compile group: 'org.kweny.carefree', name: 'carefree-mongodb-spring-boot-starter', version: '1.0.1'
 ```
 
 ### Maven
