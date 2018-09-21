@@ -1,0 +1,12 @@
+server:
+  port: 8988
+
+carefree:
+  mongodb:
+    options:
+      addresses: 192.168.16.54:27017
+      database: memone
+      auth: true
+      username: memone
+      password: OpenSesame!
+      authentication-source: memone

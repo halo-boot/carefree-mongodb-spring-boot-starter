@@ -30,6 +30,8 @@ dependencies {
     compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.0.10.RELEASE'
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.8.1'
 
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.4.RELEASE'
+
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
